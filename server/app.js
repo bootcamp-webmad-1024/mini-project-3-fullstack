@@ -1,24 +1,15 @@
 const express = require('express')
-const logger = require('morgan')
-const cors = require('cors')
+const app = express()
 const PORT = 5005
 
-const app = express()
+// Database
+require('./db')
 
-app.use(logger('dev'))
-app.use(express.json())
-app.use(cors({
-  origin: ['http://localhost:5173']
-}))
+// Configs
+require('./config')(app)
 
-app.get('/api/students', (req, res) => {
-  const students = require('./students.json')
-  res.json(students)
-})
+// Routes
+require('./routes')(app)
 
-app.get('/api/cohorts', (req, res) => {
-  const cohorts = require('./cohorts.json')
-  res.json(cohorts)
-})
 
 app.listen(PORT, () => console.log(`Server running on portn ${PORT}`))
